@@ -1,15 +1,20 @@
 import React from 'react';
 import styles from './Button.module.css';
+import PropTypes from 'prop-types';
 
-const Button = ({ onClick, scroll }) => (
+const Button = ({ onClick, onScroll }) => (
   <button
     type="button"
     onClick={onClick}
-    scroll={scroll}
+    onScroll={onScroll}
     className={styles.Button}
   >
     Показать ещё
   </button>
 );
+
+Button.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 export default Button;

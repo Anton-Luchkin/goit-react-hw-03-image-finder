@@ -12,11 +12,11 @@ class App extends React.Component {
   state = {
     hits: [],
     currentPage: 1,
-    searchQuery: ' ',
+    searchQuery: '',
     isLoading: false,
     error: null,
     showModal: false,
-    largeImage: '',
+    largeImage: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -64,14 +64,15 @@ class App extends React.Component {
     }));
   };
 
-  // activeImage = () => {
-  //    this.setState(event => {
-  //       largeImage: event.target.this.setState.hits.largeImageURL
-  //    });
-  // };
+  activeImage = largeImageURL => {
+    this.setState({ largeImage: largeImageURL });
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
 
   render() {
-    const { hits, isLoading, error, showModal } = this.state;
+    const { hits, isLoading, error, showModal, largeImage } = this.state;
     const shouldRenderLoadMoreButton = hits.length > 0 && !isLoading;
     return (
       <Container>
@@ -79,25 +80,25 @@ class App extends React.Component {
 
         <Searchbar onSubmit={this.onChangeQuery} />
 
-        <ImageGallery hits={hits} />
+        <ImageGallery hits={hits} onClickImage={this.activeImage} />
 
         {isLoading && (
           <Loader
             className={styles.loader}
             type="Audio"
             color="#303f9f"
-            timeout={3000} //3 secs
+            timeout={3000}
           />
         )}
 
         {showModal && (
           <Modal onClose={this.toggleModal}>
-            <img src={this.setState.largeImage} alt="#" />
+            <img src={largeImage} alt="#" />
           </Modal>
         )}
 
         {shouldRenderLoadMoreButton && (
-          <Button onClick={this.fetchImages} scroll={this.scrollGallery()} />
+          <Button onClick={this.fetchImages} onScroll={this.scrollGallery()} />
         )}
       </Container>
     );
